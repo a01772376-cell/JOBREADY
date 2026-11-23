@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JOBREADY — Prototipo de Baja Fidelidad (Lo-Fi Wireframe)</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tipografías: Inter (legibilidad UI) y JetBrains Mono (etiquetas técnicas de wireframe) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       ESTILOS DE WIREFRAME DE BAJA FIDELIDAD (ESTÉTICA BOCETO TÉCNICO / BALSAMIQ)
+       ========================================================================== */
+    :root {
+      --wf-bg: #F4F4F5;
+      --wf-surface: #FFFFFF;
+      --wf-ink: #18181B;
+      --wf-muted: #52525B;
+      --wf-line: #D4D4D8;
+      --wf-note-bg: #FEFCE8;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--wf-ink);
+      background-color: var(--wf-bg);
+      /* Fondo de cuadrícula tipo plano arquitectónico / lienzo de wireframe */
+      background-image: 
+        linear-gradient(to right, rgba(24, 24, 27, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(24, 24, 27, 0.06) 1px, transparent 1px);
+      background-size: 20px 20px;
+      overflow-x: hidden;
+    }
+
+    .font-mono-tech {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Contenedores principales estilo boceto con sombra dura */
+    .wf-card {
+      background-color: var(--wf-surface);
+      border: 2px solid var(--wf-ink);
+      box-shadow: 4px 4px 0px var(--wf-ink);
+      border-radius: 6px;
+    }
+
+    .wf-card-sm {
+      background-color: var(--wf-surface);
+      border: 1.5px solid var(--wf-ink);
+      box-shadow: 2px 2px 0px var(--wf-ink);
+      border-radius: 4px;
+    }
+
+    /* Caja punteada para zonas de carga o bloques secundarios */
+    .wf-dashed {
+      background-color: #FAFAFA;
+      border: 2px dashed #52525B;
+      border-radius: 6px;
+    }
+
+    /* Botón primario wireframe (negro con sombra) */
+    .wf-btn-primary {
+      background-color: var(--wf-ink);
+      color: #FFFFFF;
+      border: 2px solid var(--wf-ink);
+      box-shadow: 3px 3px 0px #71717A;
+      border-radius: 4px;
+      font-weight: 600;
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+      cursor: pointer;
+    }
+    .wf-btn-primary:hover {
+      background-color: #27272A;
+    }
+    .wf-btn-primary:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px #71717A;
+    }
+
+    /* Botón secundario wireframe (blanco con borde negro y sombra dura) */
+    .wf-btn-secondary {
+      background-color: #FFFFFF;
+      color: var(--wf-ink);
+      border: 2px solid var(--wf-ink);
+      box-shadow: 3px 3px 0px var(--wf-ink);
+      border-radius: 4px;
+      font-weight: 600;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.12s ease;
+      cursor: pointer;
+    }
+    .wf-btn-secondary:hover {
+      background-color: #F4F4F5;
+    }
+    .wf-btn-secondary:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px var(--wf-ink);
+    }
+
+    /* Inputs y Selects de wireframe */
+    .wf-input {
+      background-color: #FFFFFF;
+      border: 2px solid var(--wf-ink);
+      border-radius: 4px;
+      padding: 0.55rem 0.75rem;
+      width: 100%;
+      font-size: 0.925rem;
+      outline: none;
+    }
+    .wf-input:focus {
+      background-color: #FAFAFA;
+      box-shadow: 3px 3px 0px var(--wf-ink);
+    }
+
+    /* Notas adhesivas UX / Hipótesis del proyecto */
+    .ux-note {
+      background-color: var(--wf-note-bg);
+      border: 1.5px dashed #52525B;
+      box-shadow: 3px 3px 0px #71717A;
+      border-radius: 4px;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    /* Clase global para ocultar notas UX cuando el toggle está en OFF */
+    body.hide-ux-notes .ux-note {
+      display: none !important;
+    }
+
+    /* Ocultar barra de scroll en pestañas móviles manteniendo funcionalidad */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ==========================================================================
+       1. BARRA SUPERIOR FIJA DE CONTROL DEL PROTOTIPO
+       ========================================================================== -->
+  <header class="sticky top-0 z-40 bg-zinc-900 text-white border-b-2 border-zinc-950 shadow-md">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5">
+      <!-- Fila Superior: Título del Prototipo y Toggle Notas UX -->
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-zinc-700">
+        <div class="flex items-center gap-2.5">
+          <span class="font-mono-tech text-[11px] uppercase tracking-wider px-2 py-0.5 bg-zinc-100 text-zinc-900 font-bold rounded">
+            LO-FI WIREFRAME
+          </span>
+          <h1 class="text-sm sm:text-base font-bold tracking-tight">
+            JOBREADY — Prototipo de Baja Fidelidad (v1.0)
+          </h1>
+        </div>
+
+        <!-- Botón Interruptor (Toggle) Notas UX / Hipótesis -->
+        <button
+          id="toggle-ux-btn"
+          onclick="toggleUxNotes()"
+          class="font-mono-tech text-xs px-3 py-1.5 rounded border border-zinc-400 bg-zinc-800 hover:bg-zinc-700 text-zinc-100 flex items-center gap-2 transition cursor-pointer"
+          title="Muestra u oculta anotaciones sobre Pain Points e Hipótesis del proyecto"
+        >
+          <span id="ux-indicator" class="w-2.5 h-2.5 rounded-full bg-amber-300 inline-block"></span>
+          <span>Notas UX / Hipótesis: <strong id="ux-status-text">ON</strong></span>
+        </button>
+      </div>
+
+      <!-- Fila Inferior: Navegación Rápida entre las 5 Pantallas + Vista Mapa de Flujo -->
+      <nav aria-label="Navegación de pantallas del prototipo" class="flex items-center gap-1.5 pt-2 overflow-x-auto no-scrollbar">
+        <button onclick="navigateTo('screen-1')" data-nav="screen-1" class="nav-pill font-mono-tech text-xs px-3 py-1.5 rounded whitespace-nowrap bg-white text-zinc-900 font-bold border border-white cursor-pointer">
+          1. Inicio (Propuesta)
+        </button>
+        <button onclick="navigateTo('screen-2')" data-nav="screen-2" class="nav-pill font-mono-tech text-xs px-3 py-1.5 rounded whitespace-nowrap bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-700 cursor-pointer">
+          2. Diagnóstico Rápido
+        </button>
+        <button onclick="navigateTo('screen-3')" data-nav="screen-3" class="nav-pill font-mono-tech text-xs px-3 py-1.5 rounded whitespace-nowrap bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-700 cursor-pointer">
+          3. Mi Ruta JobReady
+        </button>
+        <button onclick="navigateTo('screen-4')" data-nav="screen-4" class="nav-pill font-mono-tech text-xs px-3 py-1.5 rounded whitespace-nowrap bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-700 cursor-pointer">
+          4. Mentorías y Simulacros
+        </button>
+        <button onclick="navigateTo('screen-5')" data-nav="screen-5" class="nav-pill font-mono-tech text-xs px-3 py-1.5 rounded whitespace-nowrap bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-700 cursor-pointer">
+          5. Paquetes Accesibles
+        </button>
+        <div class="h-4 w-[1px] bg-zinc-600 mx-1 hidden sm:block"></div>
+        <button onclick="navigateTo('screen-flow')" data-nav="screen-flow" class="nav-pill font-mono-tech text-xs px-3 py-1.5 rounded whitespace-nowrap bg-zinc-800 text-amber-200 hover:bg-zinc-700 border border-dashed border-amber-300/60 cursor-pointer">
+          [⊞ Mapa de Flujo (5 Pantallas)]
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       CONTENEDOR PRINCIPAL DEL LIENZO WIREFRAME (SIMULACIÓN DE VENTANA NAVEGADOR)
+       ========================================================================== -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-6">
+    
+    <!-- Marco superior de navegador en baja fidelidad -->
+    <div class="wf-card overflow-hidden">
+      <div class="bg-zinc-200 border-b-2 border-zinc-900 px-4 py-2 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-full border-2 border-zinc-900 bg-white inline-block"></span>
+          <span class="w-3 h-3 rounded-full border-2 border-zinc-900 bg-white inline-block"></span>
+          <span class="w-3 h-3 rounded-full border-2 border-zinc-900 bg-white inline-block"></span>
+        </div>
+        <div id="browser-url" class="font-mono-tech text-xs bg-white border border-zinc-900 px-3 py-1 rounded flex-1 max-w-md text-center truncate">
+          https://jobready.mx/inicio
+        </div>
+        <span id="screen-badge" class="font-mono-tech text-[11px] font-bold px-2 py-0.5 bg-zinc-900 text-white rounded">
+          PANTALLA 1 / 5
+        </span>
+      </div>
+
+      <!-- ======================================================================
+           PANTALLA 1: INICIO (PROPUESTA DE VALOR)
+           ====================================================================== -->
+      <section id="screen-1" class="screen-view p-4 sm:p-8 bg-white">
+        <!-- Header interno de la plataforma -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-5 mb-6 border-b-2 border-zinc-900">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 border-2 border-zinc-900 bg-zinc-900 text-white font-mono-tech font-bold flex items-center justify-center rounded">
+              JR
+            </div>
+            <span class="font-mono-tech font-bold text-lg tracking-tight">[JOBREADY]</span>
+          </div>
+
+          <div class="hidden md:flex items-center gap-6 text-sm font-medium text-zinc-700">
+            <button onclick="navigateTo('screen-1')" class="underline font-bold text-zinc-900 cursor-pointer">Cómo funciona</button>
+            <button onclick="navigateTo('screen-4')" class="hover:underline cursor-pointer">Mentores</button>
+            <button onclick="navigateTo('screen-5')" class="hover:underline cursor-pointer">Planes Universitarios</button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="navigateTo('screen-3')" class="wf-btn-secondary text-xs sm:text-sm px-3 py-2">
+              Mi Ruta
+            </button>
+            <button onclick="navigateTo('screen-2')" class="wf-btn-primary text-xs sm:text-sm px-3.5 py-2">
+              Iniciar Diagnóstico Gratis
+            </button>
+          </div>
+        </div>
+
+        <!-- Nota UX: Propuesta de Valor e Hipótesis -->
+        <div class="ux-note p-3 mb-6 text-xs">
+          <p class="font-mono-tech font-bold uppercase text-zinc-800 mb-1">📌 Nota UX / Hipótesis #1 (Propuesta de Valor):</p>
+          <p class="text-zinc-700">
+            Ataca directamente la brecha entre la universidad y el primer empleo: estudiantes de últimos semestres (como Erwin, 9.º sem. Arquitectura) sienten frustración ante vacantes "Junior" que piden 1–3 años de experiencia. Aquí comunicamos desde el segundo 1 que sus <strong>proyectos escolares cuentan como experiencia real</strong>.
+          </p>
+        </div>
+
+        <!-- Hero Section Wireframe -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-10">
+          <div class="lg:col-span-7 space-y-4">
+            <span class="font-mono-tech text-xs uppercase px-2.5 py-1 bg-zinc-100 border border-zinc-900 inline-block">
+              [ PLATAFORMA PARA ESTUDIANTES Y RECIÉN EGRESADOS ]
+            </span>
+            <h2 class="text-2xl sm:text-4xl font-extrabold leading-tight tracking-tight text-zinc-900">
+              Da el salto de estudiante a tu primer empleo profesional (sin experiencia previa)
+            </h2>
+            <p class="text-sm sm:text-base text-zinc-600 leading-relaxed">
+              Transforma tus entregas y proyectos escolares en un <strong>portafolio ejecutivo de alto impacto</strong>, estructura un CV que pase filtros de Recursos Humanos y practica con mentores reales de tu industria.
+            </p>
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <button onclick="navigateTo('screen-2')" class="wf-btn-primary px-5 py-3 text-sm sm:text-base">
+                Iniciar Diagnóstico Gratis &rarr;
+              </button>
+              <button onclick="navigateTo('screen-5')" class="wf-btn-secondary px-4 py-3 text-sm">
+                Ver Paquetes Accesibles
+              </button>
+            </div>
+            <p class="font-mono-tech text-xs text-zinc-500">
+              * Sin tarjeta de crédito • Diagnóstico personalizado en 2 minutos
+            </p>
+          </div>
+
+          <!-- Caja Placeholder Cruzada con X: [ VIDEO DEMO 45 SEG ] -->
+          <div class="lg:col-span-5">
+            <div class="wf-card relative h-64 sm:h-72 bg-zinc-100 flex flex-col items-center justify-center p-4 overflow-hidden">
+              <!-- Líneas cruzadas SVG de Wireframe -->
+              <svg class="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none">
+                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#A1A1AA" stroke-width="1.5" />
+                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#A1A1AA" stroke-width="1.5" />
+              </svg>
+
+              <!-- Contenido interactivo dentro del placeholder -->
+              <div id="video-placeholder-default" class="relative z-10 bg-white border-2 border-zinc-900 px-4 py-3 text-center shadow-[3px_3px_0px_#18181B]">
+                <p class="font-mono-tech text-xs font-bold mb-2">[ VIDEO DEMO 45 SEG ]</p>
+                <p class="text-xs text-zinc-600 mb-3">Cómo convertir entregas escolares en un portafolio profesional</p>
+                <button onclick="playWireframeDemo()" class="wf-btn-secondary font-mono-tech text-xs px-3 py-1.5">
+                  &#9654; Simular Reproducción
+                </button>
+              </div>
+
+              <!-- Storyboard interactivo al hacer clic en reproducir -->
+              <div id="video-placeholder-playing" class="hidden relative z-10 bg-white border-2 border-zinc-900 p-4 w-full max-w-xs text-left shadow-[3px_3px_0px_#18181B]">
+                <div class="flex justify-between items-center border-b border-zinc-300 pb-1.5 mb-2">
+                  <span class="font-mono-tech text-[11px] font-bold">[ DEMO INTERACTIVA 0:15 / 0:45 ]</span>
+                  <button onclick="stopWireframeDemo()" class="font-mono-tech text-xs font-bold px-1.5 border border-zinc-900 cursor-pointer">X</button>
+                </div>
+                <ol class="text-xs space-y-1.5 text-zinc-800 list-decimal list-inside">
+                  <li><strong>Sube tus archivos:</strong> Láminas, planos o códigos de clase.</li>
+                  <li><strong>Curaduría guiada:</strong> Un mentor te ayuda a sintetizarlos.</li>
+                  <li><strong>Simulacro real:</strong> Practicas cómo defender tu trabajo en entrevista.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Tarjetas de Propuesta de Valor -->
+        <div class="border-t-2 border-zinc-900 pt-8">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-mono-tech text-sm font-bold uppercase tracking-wider">
+              [ PILARES DE VALOR JOBREADY ]
+            </h3>
+            <span class="font-mono-tech text-xs text-zinc-500">3 Soluciones Clave</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- Pilar 1 -->
+            <div class="wf-card p-5 flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 border-2 border-zinc-900 bg-zinc-100 font-mono-tech font-bold flex items-center justify-center mb-3">
+                  01
+                </div>
+                <h4 class="font-bold text-lg mb-2">Revisión de CV y Portafolio</h4>
+                <p class="text-sm text-zinc-600 mb-4">
+                  Transforma láminas, maquetas y proyectos académicos desordenados en un documento ejecutivo de 10–15 páginas con estándar de industria.
+                </p>
+              </div>
+              <button onclick="navigateTo('screen-3')" class="font-mono-tech text-xs font-bold underline text-left cursor-pointer">
+                Explorar módulo de portafolio &rarr;
+              </button>
+            </div>
+
+            <!-- Pilar 2 -->
+            <div class="wf-card p-5 flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 border-2 border-zinc-900 bg-zinc-100 font-mono-tech font-bold flex items-center justify-center mb-3">
+                  02
+                </div>
+                <h4 class="font-bold text-lg mb-2">Simulacros de Entrevista</h4>
+                <p class="text-sm text-zinc-600 mb-4">
+                  Pierde el miedo a hablar con reclutadores. Practica cómo "vender" tu pensamiento analítico y recibir retroalimentación real antes de tu entrevista.
+                </p>
+              </div>
+              <button onclick="navigateTo('screen-4')" class="font-mono-tech text-xs font-bold underline text-left cursor-pointer">
+                Ver simulacros 1 a 1 &rarr;
+              </button>
+            </div>
+
+            <!-- Pilar 3 -->
+            <div class="wf-card p-5 flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 border-2 border-zinc-900 bg-zinc-100 font-mono-tech font-bold flex items-center justify-center mb-3">
+                  03
+                </div>
+                <h4 class="font-bold text-lg mb-2">Mentorías Flexibles</h4>
+                <p class="text-sm text-zinc-600 mb-4">
+                  Acompañamiento por especialistas de tu misma carrera en formatos adaptados a tu carga académica y presupuesto universitario.
+                </p>
+              </div>
+              <button onclick="navigateTo('screen-4')" class="font-mono-tech text-xs font-bold underline text-left cursor-pointer">
+                Conocer mentores por área &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           PANTALLA 2: DIAGNÓSTICO RÁPIDO
+           ====================================================================== -->
+      <section id="screen-2" class="screen-view hidden p-4 sm:p-8 bg-white">
+        <div class="max-w-3xl mx-auto">
+          <!-- Encabezado de pantalla -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b-2 border-zinc-900">
+            <div>
+              <span class="font-mono-tech text-xs text-zinc-500 uppercase">[ PASO 1 DE 2 — PERSONALIZACIÓN ]</span>
+              <h2 class="text-2xl font-extrabold">Diagnóstico Rápido de Empleabilidad</h2>
+            </div>
+            <!-- Botón Autocompletar Perfil Ejemplo (Erwin) -->
+            <button
+              type="button"
+              onclick="autofillErwin()"
+              class="wf-btn-secondary font-mono-tech text-xs px-3 py-2 bg-zinc-100"
+            >
+              &#9889; Autocompletar perfil ejemplo (Erwin - Arquitectura 9.º sem)
+            </button>
+          </div>
+
+          <!-- Nota UX: Onboarding y Segmentación -->
+          <div class="ux-note p-3 mb-6 text-xs">
+            <p class="font-mono-tech font-bold uppercase text-zinc-800 mb-1">📌 Nota UX / Pain Point (Falta de tiempo en fin de carrera):</p>
+            <p class="text-zinc-700">
+              Los estudiantes de 8.º y 9.º semestre tienen alta carga académica. Este diagnóstico toma menos de 60 segundos, identifica sus bloqueos principales (ej. portafolio desorganizado o inseguridad al presentarse) y adapta el formato según su disponibilidad.
+            </p>
+          </div>
+
+          <!-- Formulario Interactivo -->
+          <form onsubmit="submitDiagnostic(event)" class="space-y-6">
+            <!-- Datos académicos -->
+            <div class="wf-card p-5 space-y-4">
+              <h3 class="font-mono-tech text-xs font-bold uppercase border-b border-zinc-300 pb-2">
+                1. Información Académica Básica
+              </h3>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-xs font-bold mb-1">Nombre / Alias</label>
+                  <input id="input-name" type="text" placeholder="Ej. Sofía / Erwin" class="wf-input" required />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1">Carrera Universitaria</label>
+                  <select id="input-major" class="wf-input">
+                    <option value="Arquitectura">Arquitectura</option>
+                    <option value="Ingeniería Industrial / Mecatrónica">Ingeniería Industrial / Mecatrónica</option>
+                    <option value="Negocios / Finanzas">Negocios / Finanzas</option>
+                    <option value="Diseño / Comunicación">Diseño / Comunicación</option>
+                    <option value="Tecnologías de Información">Tecnologías de Información</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold mb-1">Semestre / Estatus</label>
+                  <select id="input-semester" class="wf-input">
+                    <option value="7.º Semestre">7.º Semestre</option>
+                    <option value="8.º Semestre">8.º Semestre</option>
+                    <option value="9.º Semestre (Último)" selected>9.º Semestre (Último)</option>
+                    <option value="Recién Egresado/a">Recién Egresado/a</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Retos principales (Checkboxes funcionales) -->
+            <div class="wf-card p-5 space-y-3">
+              <h3 class="font-mono-tech text-xs font-bold uppercase border-b border-zinc-300 pb-2">
+                2. ¿Cuáles son tus retos principales hoy? (Selecciona uno o varios)
+              </h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <label class="wf-card-sm p-3 flex items-start gap-3 cursor-pointer hover:bg-zinc-50">
+                  <input type="checkbox" name="pain" value="No tengo experiencia formal" class="mt-1 w-4 h-4 accent-zinc-900" checked />
+                  <div>
+                    <span class="text-sm font-bold block">No tengo experiencia formal</span>
+                    <span class="text-xs text-zinc-500">Las vacantes "Junior" piden 1–3 años previos.</span>
+                  </div>
+                </label>
+
+                <label class="wf-card-sm p-3 flex items-start gap-3 cursor-pointer hover:bg-zinc-50">
+                  <input type="checkbox" name="pain" value="Portafolio escolar desorganizado" class="mt-1 w-4 h-4 accent-zinc-900" checked />
+                  <div>
+                    <span class="text-sm font-bold block">Portafolio escolar desorganizado</span>
+                    <span class="text-xs text-zinc-500">Tengo muchos archivos pero no sé sintetizarlos.</span>
+                  </div>
+                </label>
+
+                <label class="wf-card-sm p-3 flex items-start gap-3 cursor-pointer hover:bg-zinc-50">
+                  <input type="checkbox" name="pain" value="Inseguridad en entrevistas" class="mt-1 w-4 h-4 accent-zinc-900" />
+                  <div>
+                    <span class="text-sm font-bold block">Inseguridad en entrevistas</span>
+                    <span class="text-xs text-zinc-500">Me cuesta "vender" mis habilidades ante reclutadores.</span>
+                  </div>
+                </label>
+
+                <label class="wf-card-sm p-3 flex items-start gap-3 cursor-pointer hover:bg-zinc-50">
+                  <input type="checkbox" name="pain" value="No sé armar mi CV" class="mt-1 w-4 h-4 accent-zinc-900" />
+                  <div>
+                    <span class="text-sm font-bold block">No sé armar mi CV</span>
+                    <span class="text-xs text-zinc-500">Dudas sobre formato, palabras clave y extensión.</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Formato Preferido -->
+            <div class="wf-card p-5 space-y-3">
+              <h3 class="font-mono-tech text-xs font-bold uppercase border-b border-zinc-300 pb-2">
+                3. Formato preferido para recibir asesoría
+              </h3>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                <label class="wf-card-sm p-3 flex items-center gap-2.5 cursor-pointer hover:bg-zinc-50">
+                  <input type="radio" name="format" value="Videollamada 1 a 1" class="w-4 h-4 accent-zinc-900" checked />
+                  <div>
+                    <span class="text-sm font-bold block">Videollamada 1 a 1</span>
+                    <span class="text-xs text-zinc-500">Feedback personalizado</span>
+                  </div>
+                </label>
+
+                <label class="wf-card-sm p-3 flex items-center gap-2.5 cursor-pointer hover:bg-zinc-50">
+                  <input type="radio" name="format" value="Taller grupal" class="w-4 h-4 accent-zinc-900" />
+                  <div>
+                    <span class="text-sm font-bold block">Taller grupal</span>
+                    <span class="text-xs text-zinc-500">Sesiones prácticas en vivo</span>
+                  </div>
+                </label>
+
+                <label class="wf-card-sm p-3 flex items-center gap-2.5 cursor-pointer hover:bg-zinc-50">
+                  <input type="radio" name="format" value="Contenido grabado" class="w-4 h-4 accent-zinc-900" />
+                  <div>
+                    <span class="text-sm font-bold block">Contenido grabado</span>
+                    <span class="text-xs text-zinc-500">A tu propio ritmo</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+              <button type="button" onclick="navigateTo('screen-1')" class="wf-btn-secondary px-4 py-2.5 text-sm">
+                &larr; Volver al Inicio
+              </button>
+              <button type="submit" class="wf-btn-primary px-6 py-3 text-sm sm:text-base">
+                Generar mi Plan Personalizado &rarr;
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           PANTALLA 3: MI RUTA JOBREADY (DASHBOARD DEL ESTUDIANTE)
+           ====================================================================== -->
+      <section id="screen-3" class="screen-view hidden p-4 sm:p-8 bg-white">
+        <!-- Header del Dashboard con perfil dinámico -->
+        <div class="wf-card p-4 sm:p-5 mb-6 bg-zinc-50">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+              <!-- Avatar placeholder cruzado -->
+              <div class="relative w-14 h-14 border-2 border-zinc-900 bg-white flex items-center justify-center shrink-0">
+                <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                  <line x1="0" y1="0" x2="100%" y2="100%" stroke="#A1A1AA" stroke-width="1.2" />
+                  <line x1="100%" y1="0" x2="0" y2="100%" stroke="#A1A1AA" stroke-width="1.2" />
+                </svg>
+                <span class="relative z-10 font-mono-tech text-[10px] font-bold bg-white px-1 border border-zinc-900">USER</span>
+              </div>
+              <div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <h2 class="text-xl font-extrabold" id="dash-user-name">Erwin Gonzales</h2>
+                  <span id="dash-user-badge" class="font-mono-tech text-xs px-2 py-0.5 bg-zinc-900 text-white rounded">
+                    Arquitectura • 9.º Semestre
+                  </span>
+                </div>
+                <p class="text-xs text-zinc-600 mt-1">
+                  Modalidad preferida: <strong id="dash-user-format">Videollamada 1 a 1</strong> • Enfoque: <span id="dash-user-pains">Portafolio + Sin experiencia formal</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- Barra de Progreso Interactiva -->
+            <div class="w-full md:w-72 bg-white border-2 border-zinc-900 p-3 rounded">
+              <div class="flex justify-between items-center text-xs font-mono-tech font-bold mb-1.5">
+                <span>NIVEL JOBREADY</span>
+                <span id="progress-percent">25%</span>
+              </div>
+              <div class="w-full h-4 bg-zinc-200 border border-zinc-900 overflow-hidden">
+                <div id="progress-bar-fill" class="h-full bg-zinc-900 transition-all duration-300" style="width: 25%;"></div>
+              </div>
+              <p class="text-[11px] text-zinc-500 mt-1">Marca tus tareas abajo para avanzar</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nota UX: Gamificación y Ahorro de Tiempo -->
+        <div class="ux-note p-3 mb-6 text-xs">
+          <p class="font-mono-tech font-bold uppercase text-zinc-800 mb-1">📌 Nota UX / Gain Creator (Ruta Estructurada):</p>
+          <p class="text-zinc-700">
+            Resuelve el dolor de <em>"no saber por dónde empezar"</em> y evita perder semanas buscando consejos dispersos en internet. Al dividir la preparación en 3 módulos accionables, el estudiante visualiza avances tangibles rumbo a sus prácticas profesionales.
+          </p>
+        </div>
+
+        <!-- Grid de 3 Módulos de Ruta -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- MÓDULO 1: Optimización de CV y Portafolio -->
+          <div class="wf-card p-5 flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center justify-between border-b-2 border-zinc-900 pb-2 mb-3">
+                <span class="font-mono-tech text-xs font-bold">[ MÓDULO 01 ]</span>
+                <label class="flex items-center gap-1.5 text-xs font-mono-tech font-bold cursor-pointer">
+                  <input type="checkbox" class="task-checkbox w-4 h-4 accent-zinc-900" onchange="updateProgress()" checked />
+                  Completado
+                </label>
+              </div>
+              <h3 class="font-bold text-lg mb-1">Optimización de CV y Portafolio</h3>
+              <p class="text-xs text-zinc-600 mb-4">
+                Convierte tus archivos pesados de clase en un portafolio ejecutivo de 10 a 15 páginas.
+              </p>
+
+              <!-- Simulador interactivo de conversión de proyecto escolar -->
+              <div class="wf-dashed p-3.5 text-center space-y-2.5">
+                <p class="font-mono-tech text-[11px] text-zinc-600 uppercase">
+                  [ ZONA DE CURADURÍA DE PROYECTOS ]
+                </p>
+                <div id="portfolio-raw-box" class="bg-white border border-zinc-400 p-2 text-left text-xs">
+                  <p class="font-mono-tech text-[11px] text-zinc-500">Archivo escolar detectado:</p>
+                  <p class="font-semibold truncate">Entrega_Taller_Diseno_Final_v4.pdf (84 MB)</p>
+                </div>
+
+                <button id="convert-portfolio-btn" onclick="convertAcademicProject()" class="wf-btn-secondary w-full text-xs py-2">
+                  + Simular Conversión a Formato Ejecutivo
+                </button>
+
+                <!-- Resultado tras conversión -->
+                <div id="portfolio-converted-box" class="hidden bg-zinc-900 text-white p-2.5 text-left rounded">
+                  <p class="font-mono-tech text-[10px] text-amber-300 uppercase">&#10003; LISTO PARA PORTAFOLIO (3 PÁGS)</p>
+                  <p class="text-xs font-bold mt-0.5">Caso de Estudio: Vivienda Sostenible & Modelado BIM</p>
+                  <p class="text-[11px] text-zinc-300 mt-1">Problema resuelto + Rol técnico + Renders clave.</p>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="navigateTo('screen-4')" class="wf-btn-secondary w-full text-xs py-2">
+              Pedir revisión a un Mentor &rarr;
+            </button>
+          </div>
+
+          <!-- MÓDULO 2: Preparación de Entrevistas -->
+          <div class="wf-card p-5 flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center justify-between border-b-2 border-zinc-900 pb-2 mb-3">
+                <span class="font-mono-tech text-xs font-bold">[ MÓDULO 02 ]</span>
+                <label class="flex items-center gap-1.5 text-xs font-mono-tech font-bold cursor-pointer">
+                  <input type="checkbox" class="task-checkbox w-4 h-4 accent-zinc-900" onchange="updateProgress()" />
+                  Completado
+                </label>
+              </div>
+              <h3 class="font-bold text-lg mb-1">Preparación de Entrevistas</h3>
+              <p class="text-xs text-zinc-600 mb-4">
+                Aprende a defender tus proyectos académicos como soluciones reales ante directores y RH.
+              </p>
+
+              <!-- Tarjeta de pregunta real de práctica -->
+              <div class="bg-zinc-100 border-2 border-zinc-900 p-3.5 rounded space-y-2.5">
+                <span class="font-mono-tech text-[10px] font-bold px-2 py-0.5 bg-white border border-zinc-900 inline-block">
+                  PREGUNTA DE PRÁCTICA REAL
+                </span>
+                <p id="interview-question-text" class="text-xs sm:text-sm font-semibold italic text-zinc-900">
+                  "No tienes experiencia formal en despacho/empresa aún. Cuéntame sobre un proyecto universitario complejo donde hayas resuelto un problema técnico bajo presión."
+                </p>
+
+                <button onclick="toggleInterviewTips()" id="tips-toggle-btn" class="wf-btn-secondary w-full text-xs py-1.5">
+                  Ver Tips de Respuesta (Método STAR)
+                </button>
+
+                <div id="interview-tips-box" class="hidden bg-white border border-zinc-900 p-2.5 text-xs space-y-1">
+                  <p class="font-bold">Estructura recomendada:</p>
+                  <p>• <strong>Situación:</strong> Contexto del proyecto y reto principal.</p>
+                  <p>• <strong>Acción:</strong> Herramientas técnicas que dominaste (ej. BIM, Excel, Python).</p>
+                  <p>• <strong>Resultado:</strong> Entrega tangible y aprendizaje medible.</p>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="navigateTo('screen-4')" class="wf-btn-primary w-full text-xs py-2">
+              Agendar Simulacro 1 a 1 &rarr;
+            </button>
+          </div>
+
+          <!-- MÓDULO 3: Talleres y Vacantes Junior -->
+          <div class="wf-card p-5 flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center justify-between border-b-2 border-zinc-900 pb-2 mb-3">
+                <span class="font-mono-tech text-xs font-bold">[ MÓDULO 03 ]</span>
+                <label class="flex items-center gap-1.5 text-xs font-mono-tech font-bold cursor-pointer">
+                  <input type="checkbox" class="task-checkbox w-4 h-4 accent-zinc-900" onchange="updateProgress()" />
+                  Completado
+                </label>
+              </div>
+              <h3 class="font-bold text-lg mb-1">Talleres y Vacantes Primer Empleo</h3>
+              <p class="text-xs text-zinc-600 mb-4">
+                Oportunidades filtradas donde <strong>NO se exige experiencia formal previa</strong>.
+              </p>
+
+              <!-- Lista de vacantes filtradas -->
+              <div class="space-y-2.5">
+                <div class="wf-card-sm p-2.5">
+                  <div class="flex justify-between items-start gap-2">
+                    <div>
+                      <span class="font-mono-tech text-[10px] bg-zinc-200 px-1.5 py-0.5 font-bold">0 AÑOS EXP.</span>
+                      <h4 class="text-xs font-bold mt-1">Becario de Conceptualización & BIM</h4>
+                      <p class="text-[11px] text-zinc-500">Taller Urbano MX • Híbrido</p>
+                    </div>
+                    <button onclick="showToast('Postulación simulada enviada con tu Portafolio JobReady.')" class="wf-btn-secondary font-mono-tech text-[11px] px-2 py-1 shrink-0">
+                      Aplicar
+                    </button>
+                  </div>
+                </div>
+
+                <div class="wf-card-sm p-2.5">
+                  <div class="flex justify-between items-start gap-2">
+                    <div>
+                      <span class="font-mono-tech text-[10px] bg-zinc-200 px-1.5 py-0.5 font-bold">TALLER EN VIVO</span>
+                      <h4 class="text-xs font-bold mt-1">Cómo negociar tu primer sueldo y esquema híbrido</h4>
+                      <p class="text-[11px] text-zinc-500">Jueves 19:00 hrs • Vía Zoom</p>
+                    </div>
+                    <button onclick="showToast('Lugar reservado en el taller en vivo.')" class="wf-btn-secondary font-mono-tech text-[11px] px-2 py-1 shrink-0">
+                      Unirme
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="navigateTo('screen-5')" class="wf-btn-secondary w-full text-xs py-2">
+              Desbloquear Todos los Talleres &rarr;
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           PANTALLA 4: MENTORÍAS Y SIMULACROS
+           ====================================================================== -->
+      <section id="screen-4" class="screen-view hidden p-4 sm:p-8 bg-white">
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-4 mb-6 border-b-2 border-zinc-900">
+          <div>
+            <span class="font-mono-tech text-xs text-zinc-500 uppercase">[ RED DE ESPECIALISTAS Y RH ]</span>
+            <h2 class="text-2xl font-extrabold">Mentorías 1 a 1 y Simulacros de Entrevista</h2>
+          </div>
+
+          <!-- Filtro interactivo por área -->
+          <div class="flex flex-wrap items-center gap-1.5" role="group" aria-label="Filtrar mentores por área">
+            <button onclick="filterMentors('Todos')" data-filter="Todos" class="mentor-filter-btn wf-btn-primary font-mono-tech text-xs px-3 py-1.5">
+              Todos
+            </button>
+            <button onclick="filterMentors('Arquitectura y Diseño')" data-filter="Arquitectura y Diseño" class="mentor-filter-btn wf-btn-secondary font-mono-tech text-xs px-3 py-1.5">
+              Arquitectura y Diseño
+            </button>
+            <button onclick="filterMentors('Ingeniería')" data-filter="Ingeniería" class="mentor-filter-btn wf-btn-secondary font-mono-tech text-xs px-3 py-1.5">
+              Ingeniería
+            </button>
+            <button onclick="filterMentors('Negocios')" data-filter="Negocios" class="mentor-filter-btn wf-btn-secondary font-mono-tech text-xs px-3 py-1.5">
+              Negocios
+            </button>
+          </div>
+        </div>
+
+        <!-- Nota UX: Acompañamiento por industria -->
+        <div class="ux-note p-3 mb-6 text-xs">
+          <p class="font-mono-tech font-bold uppercase text-zinc-800 mb-1">📌 Nota UX / Hipótesis de Especialización:</p>
+          <p class="text-zinc-700">
+            Un estudiante de Arquitectura necesita feedback de un arquitecto senior (portafolio visual, BIM, renderizado), mientras que uno de Ingeniería necesita revisión técnica. Filtrar por área garantiza asesoría relevante y aumenta la confianza antes de entrevistas reales.
+          </p>
+        </div>
+
+        <!-- Lista de Mentores Especialistas -->
+        <div id="mentors-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Mentor 1: Arquitectura y Diseño -->
+          <article data-category="Arquitectura y Diseño" class="mentor-card wf-card p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3.5 mb-4">
+                <!-- Placeholder Avatar con X -->
+                <div class="relative w-16 h-16 border-2 border-zinc-900 bg-zinc-100 flex items-center justify-center shrink-0">
+                  <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#A1A1AA" stroke-width="1.5" />
+                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#A1A1AA" stroke-width="1.5" />
+                  </svg>
+                  <span class="relative z-10 font-mono-tech text-[10px] font-bold bg-white px-1 border border-zinc-900">AVATAR</span>
+                </div>
+                <div>
+                  <span class="font-mono-tech text-[10px] uppercase px-2 py-0.5 bg-zinc-900 text-white rounded">
+                    Arquitectura y Diseño
+                  </span>
+                  <h3 class="font-bold text-base mt-1">Arq. Valeria Méndez</h3>
+                  <p class="text-xs text-zinc-600">Líder de Proyectos • Estudio ArqMX</p>
+                </div>
+              </div>
+
+              <p class="text-xs text-zinc-700 mb-3">
+                Especialista en curaduría de portafolios de arquitectura (estándar internacional) y entrevistas para puestos Junior BIM / Concepto.
+              </p>
+
+              <div class="bg-zinc-100 border border-zinc-300 p-2.5 rounded text-xs space-y-1 mb-4">
+                <p><strong>Disponibilidad:</strong> Lun y Mié (17:00 - 20:00)</p>
+                <p><strong>Modalidad:</strong> Videollamada 1 a 1 (45 min)</p>
+              </div>
+            </div>
+
+            <button
+              onclick="openBookingModal('Arq. Valeria Méndez', 'Revisión de Portafolio & Simulacro Arq.')"
+              class="wf-btn-primary w-full text-xs py-2.5"
+            >
+              Agendar Sesión / Simulacro
+            </button>
+          </article>
+
+          <!-- Mentor 2: Ingeniería -->
+          <article data-category="Ingeniería" class="mentor-card wf-card p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3.5 mb-4">
+                <div class="relative w-16 h-16 border-2 border-zinc-900 bg-zinc-100 flex items-center justify-center shrink-0">
+                  <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#A1A1AA" stroke-width="1.5" />
+                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#A1A1AA" stroke-width="1.5" />
+                  </svg>
+                  <span class="relative z-10 font-mono-tech text-[10px] font-bold bg-white px-1 border border-zinc-900">AVATAR</span>
+                </div>
+                <div>
+                  <span class="font-mono-tech text-[10px] uppercase px-2 py-0.5 bg-zinc-900 text-white rounded">
+                    Ingeniería
+                  </span>
+                  <h3 class="font-bold text-base mt-1">Ing. Carlos Navarro</h3>
+                  <p class="text-xs text-zinc-600">Tech & Ops Lead • Manufactura Global</p>
+                </div>
+              </div>
+
+              <p class="text-xs text-zinc-700 mb-3">
+                Ayuda a estudiantes de ingeniería a traducir proyectos de laboratorio y liderazgo estudiantil en logros cuantificables para CV.
+              </p>
+
+              <div class="bg-zinc-100 border border-zinc-300 p-2.5 rounded text-xs space-y-1 mb-4">
+                <p><strong>Disponibilidad:</strong> Mar y Jue (18:00 - 21:00)</p>
+                <p><strong>Modalidad:</strong> Videollamada 1 a 1 (45 min)</p>
+              </div>
+            </div>
+
+            <button
+              onclick="openBookingModal('Ing. Carlos Navarro', 'Simulacro Técnico & Optimización CV')"
+              class="wf-btn-primary w-full text-xs py-2.5"
+            >
+              Agendar Sesión / Simulacro
+            </button>
+          </article>
+
+          <!-- Mentor 3: Negocios -->
+          <article data-category="Negocios" class="mentor-card wf-card p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3.5 mb-4">
+                <div class="relative w-16 h-16 border-2 border-zinc-900 bg-zinc-100 flex items-center justify-center shrink-0">
+                  <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#A1A1AA" stroke-width="1.5" />
+                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#A1A1AA" stroke-width="1.5" />
+                  </svg>
+                  <span class="relative z-10 font-mono-tech text-[10px] font-bold bg-white px-1 border border-zinc-900">AVATAR</span>
+                </div>
+                <div>
+                  <span class="font-mono-tech text-[10px] uppercase px-2 py-0.5 bg-zinc-900 text-white rounded">
+                    Negocios
+                  </span>
+                  <h3 class="font-bold text-base mt-1">Lic. Fernanda Salas</h3>
+                  <p class="text-xs text-zinc-600">HR Talent Partner • Consultoría Latam</p>
+                </div>
+              </div>
+
+              <p class="text-xs text-zinc-700 mb-3">
+                Reclutadora senior enfocada en simulacros de entrevistas por competencias, comunicación ejecutiva y búsqueda de primeras prácticas.
+              </p>
+
+              <div class="bg-zinc-100 border border-zinc-300 p-2.5 rounded text-xs space-y-1 mb-4">
+                <p><strong>Disponibilidad:</strong> Vie y Sáb (10:00 - 14:00)</p>
+                <p><strong>Modalidad:</strong> Videollamada 1 a 1 (45 min)</p>
+              </div>
+            </div>
+
+            <button
+              onclick="openBookingModal('Lic. Fernanda Salas', 'Simulacro de Entrevista con RH')"
+              class="wf-btn-primary w-full text-xs py-2.5"
+            >
+              Agendar Sesión / Simulacro
+            </button>
+          </article>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           PANTALLA 5: PAQUETES ACCESIBLES Y VALIDACIÓN DE PRECIOS
+           ====================================================================== -->
+      <section id="screen-5" class="screen-view hidden p-4 sm:p-8 bg-white">
+        <div class="text-center max-w-2xl mx-auto mb-6">
+          <span class="font-mono-tech text-xs uppercase px-2.5 py-1 bg-zinc-100 border border-zinc-900 inline-block mb-2">
+            [ MODELO DE INGRESOS — PRESUPUESTO UNIVERSITARIO ]
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold">Paquetes Accesibles para tu Primer Empleo</h2>
+          <p class="text-sm text-zinc-600 mt-1">
+            Elige un paquete puntual para una necesidad urgente o acompañamiento continuo hasta firmar tu contrato.
+          </p>
+        </div>
+
+        <!-- Nota UX: Validación de disposición a pagar -->
+        <div class="ux-note p-3 mb-6 text-xs max-w-4xl mx-auto">
+          <p class="font-mono-tech font-bold uppercase text-zinc-800 mb-1">📌 Nota UX / Indicador de Éxito #3 (Disposición a Pagar):</p>
+          <p class="text-zinc-700">
+            Considerando el ingreso promedio universitario ($3,000–$4,000 MXN/mes en nuestro User Persona Erwin), diseñamos un esquema freemium + pago único accesible ($299 MXN) + membresía ($499 MXN/mes). Al seleccionar un plan se despliega una <strong>mini-encuesta en vivo</strong> para validar precios durante tus entrevistas con clientes.
+          </p>
+        </div>
+
+        <!-- 3 Columnas de Precios -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
+          <!-- Plan 1: Explorador -->
+          <div class="wf-card p-6 flex flex-col justify-between">
+            <div>
+              <span class="font-mono-tech text-xs font-bold text-zinc-500">OPCIÓN 01</span>
+              <h3 class="text-xl font-extrabold mt-1">Plan Explorador</h3>
+              <div class="my-4 pb-4 border-b-2 border-zinc-200">
+                <span class="text-3xl font-extrabold">$0 MXN</span>
+                <span class="font-mono-tech text-xs text-zinc-500 block">Gratis para siempre</span>
+              </div>
+              <ul class="text-xs sm:text-sm space-y-2.5 text-zinc-700 mb-6">
+                <li>&#10003; Diagnóstico de empleabilidad</li>
+                <li>&#10003; Plantilla editable de CV universitario</li>
+                <li>&#10003; Acceso a 1 taller grupal al mes</li>
+                <li>&#10003; Guía básica de estructura de portafolio</li>
+              </ul>
+            </div>
+            <button onclick="selectPlan('Plan Explorador', '$0 MXN - Gratis')" class="wf-btn-secondary w-full py-2.5 text-sm">
+              Seleccionar Plan Gratis
+            </button>
+          </div>
+
+          <!-- Plan 2: Paquete Primer Empleo (Destacado) -->
+          <div class="wf-card p-6 flex flex-col justify-between bg-zinc-50 relative">
+            <span class="font-mono-tech text-[11px] font-bold px-2.5 py-0.5 bg-zinc-900 text-white rounded self-start mb-2">
+              [ RECOMENDADO • PAGO ÚNICO ]
+            </span>
+            <div>
+              <h3 class="text-xl font-extrabold">Paquete Primer Empleo</h3>
+              <div class="my-4 pb-4 border-b-2 border-zinc-900">
+                <span class="text-3xl font-extrabold">$299 MXN</span>
+                <span class="font-mono-tech text-xs text-zinc-600 block">Pago único • Sin plazos forzosos</span>
+              </div>
+              <ul class="text-xs sm:text-sm space-y-2.5 text-zinc-800 mb-6">
+                <li>&#10003; <strong>Revisión detallada de CV</strong> con especialista</li>
+                <li>&#10003; <strong>Curaduría de Portafolio</strong> (10–15 págs.)</li>
+                <li>&#10003; <strong>1 Simulacro de entrevista 1 a 1</strong> (45 min)</li>
+                <li>&#10003; Reporte escrito con áreas de mejora</li>
+              </ul>
+            </div>
+            <button onclick="selectPlan('Paquete Primer Empleo', '$299 MXN - Pago único')" class="wf-btn-primary w-full py-2.5 text-sm">
+              Elegir Paquete ($299 MXN)
+            </button>
+          </div>
+
+          <!-- Plan 3: Membresía JobReady -->
+          <div class="wf-card p-6 flex flex-col justify-between">
+            <div>
+              <span class="font-mono-tech text-xs font-bold text-zinc-500">OPCIÓN 03</span>
+              <h3 class="text-xl font-extrabold mt-1">Membresía JobReady</h3>
+              <div class="my-4 pb-4 border-b-2 border-zinc-200">
+                <span class="text-3xl font-extrabold">$499 MXN</span>
+                <span class="font-mono-tech text-xs text-zinc-500 block">/ mes (Cancela cuando quieras)</span>
+              </div>
+              <ul class="text-xs sm:text-sm space-y-2.5 text-zinc-700 mb-6">
+                <li>&#10003; Todo lo del Paquete Primer Empleo</li>
+                <li>&#10003; <strong>2 Mentorías 1 a 1</strong> cada mes</li>
+                <li>&#10003; Acceso ilimitado a talleres y grabaciones</li>
+                <li>&#10003; Bolsa de vacantes Junior verificadas</li>
+              </ul>
+            </div>
+            <button onclick="selectPlan('Membresía JobReady', '$499 MXN/mes')" class="wf-btn-secondary w-full py-2.5 text-sm">
+              Elegir Membresía ($499/mes)
+            </button>
+          </div>
+        </div>
+
+        <!-- Caja de Confirmación Wireframe + Mini Encuesta de Validación con Usuarios Reales -->
+        <div id="plan-validation-box" class="hidden max-w-2xl mx-auto wf-card p-5 bg-zinc-100">
+          <div class="flex items-start justify-between gap-2 border-b-2 border-zinc-900 pb-3 mb-4">
+            <div>
+              <span class="font-mono-tech text-xs font-bold bg-zinc-900 text-white px-2 py-0.5 rounded">
+                [ SIMULACIÓN DE SELECCIÓN ]
+              </span>
+              <h4 class="font-bold text-base mt-1.5">
+                Has seleccionado: <span id="selected-plan-title" class="underline">Paquete Primer Empleo ($299 MXN)</span>
+              </h4>
+            </div>
+            <button onclick="document.getElementById('plan-validation-box').classList.add('hidden')" class="font-mono-tech text-xs font-bold px-2 py-1 border border-zinc-900 bg-white cursor-pointer">
+              X
+            </button>
+          </div>
+
+          <div class="bg-white border-2 border-zinc-900 p-4 rounded space-y-3">
+            <p class="font-mono-tech text-xs font-bold uppercase text-zinc-700">
+              &#128202; Mini Encuesta de Validación (Para entrevista con usuario):
+            </p>
+            <p class="text-sm font-semibold">
+              Pensando en tu presupuesto actual como estudiante/egresado, ¿consideras accesible este precio por el valor que ofrece?
+            </p>
+            <div class="flex flex-wrap gap-2.5 pt-1">
+              <button onclick="submitPricePoll('Sí, totalmente accesible')" class="wf-btn-secondary text-xs px-4 py-2">
+                &#10003; Sí, es accesible
+              </button>
+              <button onclick="submitPricePoll('Tal vez, dependería de una garantía o descuento')" class="wf-btn-secondary text-xs px-4 py-2">
+                ~ Tal vez
+              </button>
+              <button onclick="submitPricePoll('No, preferiría un precio menor')" class="wf-btn-secondary text-xs px-4 py-2">
+                &#10005; No, se me hace caro
+              </button>
+            </div>
+            <p id="poll-feedback-msg" class="hidden font-mono-tech text-xs text-zinc-900 bg-zinc-100 border border-zinc-900 p-2 rounded mt-2"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           VISTA 6: MAPA DE FLUJO COMPLETO (5 PANTALLAS LADO A LADO PARA CAPTURAS)
+           ====================================================================== -->
+      <section id="screen-flow" class="screen-view hidden p-4 sm:p-8 bg-white">
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-4 mb-6 border-b-2 border-zinc-900">
+          <div>
+            <span class="font-mono-tech text-xs text-zinc-500 uppercase">[ ARQUITECTURA DE INFORMACIÓN & USER FLOW ]</span>
+            <h2 class="text-2xl font-extrabold">Mapa de Flujo Completo — JOBREADY (5 Pantallas)</h2>
+          </div>
+          <span class="font-mono-tech text-xs px-3 py-1 bg-zinc-100 border border-zinc-900">
+            Haz clic en cualquier pantalla para interactuar
+          </span>
+        </div>
+
+        <!-- Grid panorámico de las 5 pantallas en miniatura -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-stretch">
+          
+          <!-- Miniatura Pantalla 1 -->
+          <div onclick="navigateTo('screen-1')" class="wf-card p-3 flex flex-col justify-between cursor-pointer hover:bg-zinc-50 transition group">
+            <div>
+              <div class="flex justify-between items-center border-b border-zinc-900 pb-1.5 mb-2">
+                <span class="font-mono-tech text-[11px] font-bold">01. INICIO</span>
+                <span class="font-mono-tech text-[10px] group-hover:underline">Abrir &rarr;</span>
+              </div>
+              <!-- Esquema wireframe miniatura -->
+              <div class="space-y-1.5 mb-3">
+                <div class="h-3 bg-zinc-900 w-1/2"></div>
+                <div class="h-2 bg-zinc-300 w-full"></div>
+                <div class="h-14 border border-zinc-900 bg-zinc-100 relative flex items-center justify-center">
+                  <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#A1A1AA" stroke-width="1" />
+                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#A1A1AA" stroke-width="1" />
+                  </svg>
+                  <span class="relative z-10 font-mono-tech text-[9px] bg-white px-1 border border-zinc-900">VIDEO DEMO</span>
+                </div>
+                <div class="grid grid-cols-3 gap-1 pt-1">
+                  <div class="h-8 border border-zinc-900 bg-white"></div>
+                  <div class="h-8 border border-zinc-900 bg-white"></div>
+                  <div class="h-8 border border-zinc-900 bg-white"></div>
+                </div>
+              </div>
+            </div>
+            <p class="text-[11px] text-zinc-600 border-t border-zinc-200 pt-2">
+              <strong>Objetivo:</strong> Comunicar propuesta de valor sin experiencia previa.
+            </p>
+          </div>
+
+          <!-- Miniatura Pantalla 2 -->
+          <div onclick="navigateTo('screen-2')" class="wf-card p-3 flex flex-col justify-between cursor-pointer hover:bg-zinc-50 transition group">
+            <div>
+              <div class="flex justify-between items-center border-b border-zinc-900 pb-1.5 mb-2">
+                <span class="font-mono-tech text-[11px] font-bold">02. DIAGNÓSTICO</span>
+                <span class="font-mono-tech text-[10px] group-hover:underline">Abrir &rarr;</span>
+              </div>
+              <div class="space-y-1.5 mb-3">
+                <div class="h-4 border border-zinc-900 bg-zinc-100 px-1 flex items-center font-mono-tech text-[8px]">CARRERA / SEM</div>
+                <div class="grid grid-cols-2 gap-1">
+                  <div class="h-6 border border-zinc-900 bg-white flex items-center px-1 font-mono-tech text-[8px]">[x] Sin exp.</div>
+                  <div class="h-6 border border-zinc-900 bg-white flex items-center px-1 font-mono-tech text-[8px]">[x] Portaf.</div>
+                </div>
+                <div class="h-5 border border-zinc-900 bg-white flex items-center px-1 font-mono-tech text-[8px]">Formato: 1 a 1</div>
+                <div class="h-5 bg-zinc-900 text-white flex items-center justify-center font-mono-tech text-[8px]">GENERAR PLAN &rarr;</div>
+              </div>
+            </div>
+            <p class="text-[11px] text-zinc-600 border-t border-zinc-200 pt-2">
+              <strong>Objetivo:</strong> Perfilar dolores (Erwin) y modalidad preferida.
+            </p>
+          </div>
+
+          <!-- Miniatura Pantalla 3 -->
+          <div onclick="navigateTo('screen-3')" class="wf-card p-3 flex flex-col justify-between cursor-pointer hover:bg-zinc-50 transition group">
+            <div>
+              <div class="flex justify-between items-center border-b border-zinc-900 pb-1.5 mb-2">
+                <span class="font-mono-tech text-[11px] font-bold">03. MI RUTA</span>
+                <span class="font-mono-tech text-[10px] group-hover:underline">Abrir &rarr;</span>
+              </div>
+              <div class="space-y-1.5 mb-3">
+                <div class="h-3 border border-zinc-900 bg-zinc-200"><div class="h-full bg-zinc-900 w-1/2"></div></div>
+                <div class="h-7 border border-dashed border-zinc-900 bg-zinc-50 flex items-center justify-center font-mono-tech text-[8px]">MOD 1: PORTAFOLIO</div>
+                <div class="h-7 border border-zinc-900 bg-white flex items-center justify-center font-mono-tech text-[8px]">MOD 2: ENTREVISTA</div>
+                <div class="h-7 border border-zinc-900 bg-white flex items-center justify-center font-mono-tech text-[8px]">MOD 3: VACANTES JR</div>
+              </div>
+            </div>
+            <p class="text-[11px] text-zinc-600 border-t border-zinc-200 pt-2">
+              <strong>Objetivo:</strong> Ruta guiada paso a paso para ahorrar tiempo.
+            </p>
+          </div>
+
+          <!-- Miniatura Pantalla 4 -->
+          <div onclick="navigateTo('screen-4')" class="wf-card p-3 flex flex-col justify-between cursor-pointer hover:bg-zinc-50 transition group">
+            <div>
+              <div class="flex justify-between items-center border-b border-zinc-900 pb-1.5 mb-2">
+                <span class="font-mono-tech text-[11px] font-bold">04. MENTORÍAS</span>
+                <span class="font-mono-tech text-[10px] group-hover:underline">Abrir &rarr;</span>
+              </div>
+              <div class="space-y-1.5 mb-3">
+                <div class="flex gap-1">
+                  <span class="px-1 bg-zinc-900 text-white font-mono-tech text-[7px]">ARQ</span>
+                  <span class="px-1 border border-zinc-900 font-mono-tech text-[7px]">ING</span>
+                  <span class="px-1 border border-zinc-900 font-mono-tech text-[7px]">NEG</span>
+                </div>
+                <div class="h-10 border border-zinc-900 p-1 flex items-center gap-1">
+                  <div class="w-6 h-6 border border-zinc-900 bg-zinc-100 shrink-0"></div>
+                  <div class="h-2 bg-zinc-400 w-full"></div>
+                </div>
+                <div class="h-10 border border-zinc-900 p-1 flex items-center gap-1">
+                  <div class="w-6 h-6 border border-zinc-900 bg-zinc-100 shrink-0"></div>
+                  <div class="h-2 bg-zinc-400 w-full"></div>
+                </div>
+              </div>
+            </div>
+            <p class="text-[11px] text-zinc-600 border-t border-zinc-200 pt-2">
+              <strong>Objetivo:</strong> Agendar simulacros y mentorías con especialistas.
+            </p>
+          </div>
+
+          <!-- Miniatura Pantalla 5 -->
+          <div onclick="navigateTo('screen-5')" class="wf-card p-3 flex flex-col justify-between cursor-pointer hover:bg-zinc-50 transition group">
+            <div>
+              <div class="flex justify-between items-center border-b border-zinc-900 pb-1.5 mb-2">
+                <span class="font-mono-tech text-[11px] font-bold">05. PAQUETES</span>
+                <span class="font-mono-tech text-[10px] group-hover:underline">Abrir &rarr;</span>
+              </div>
+              <div class="space-y-1.5 mb-3">
+                <div class="grid grid-cols-3 gap-1">
+                  <div class="h-14 border border-zinc-900 p-1 text-center font-mono-tech text-[8px]">$0</div>
+                  <div class="h-14 border-2 border-zinc-900 bg-zinc-100 p-1 text-center font-mono-tech text-[8px] font-bold">$299</div>
+                  <div class="h-14 border border-zinc-900 p-1 text-center font-mono-tech text-[8px]">$499</div>
+                </div>
+                <div class="h-7 border border-dashed border-zinc-900 bg-zinc-50 flex items-center justify-center font-mono-tech text-[8px]">
+                  ENCUESTA VALIDACIÓN
+                </div>
+              </div>
+            </div>
+            <p class="text-[11px] text-zinc-600 border-t border-zinc-200 pt-2">
+              <strong>Objetivo:</strong> Validar disposición de pago y precios accesibles.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ==========================================================================
+       MODAL WIREFRAME PARA AGENDAR MENTORÍA / SIMULACRO (PANTALLA 4)
+       ========================================================================== -->
+  <div id="booking-modal" class="hidden fixed inset-0 z-50 bg-zinc-900/60 flex items-center justify-center p-4">
+    <div class="wf-card bg-white max-w-md w-full p-6">
+      <div class="flex items-center justify-between border-b-2 border-zinc-900 pb-3 mb-4">
+        <span class="font-mono-tech text-xs font-bold uppercase">[ RESERVAR SESIÓN 1 A 1 ]</span>
+        <button onclick="closeBookingModal()" class="font-mono-tech text-xs font-bold px-2 py-0.5 border border-zinc-900 cursor-pointer">
+          X
+        </button>
+      </div>
+
+      <form onsubmit="confirmBooking(event)" class="space-y-4">
+        <div>
+          <p class="text-xs text-zinc-500">Especialista seleccionado:</p>
+          <p id="modal-mentor-name" class="font-bold text-base">Arq. Valeria Méndez</p>
+          <p id="modal-mentor-topic" class="font-mono-tech text-xs text-zinc-700 mt-0.5">Revisión de Portafolio & Simulacro</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold mb-1">Tipo de Sesión</label>
+          <select id="modal-session-type" class="wf-input">
+            <option value="Simulacro de Entrevista (45 min)">Simulacro de Entrevista (45 min)</option>
+            <option value="Curaduría de Portafolio / CV (45 min)">Curaduría de Portafolio / CV (45 min)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold mb-1">Horario Disponible</label>
+          <select id="modal-time-slot" class="wf-input">
+            <option value="Mañana • 17:30 hrs (Videollamada)">Mañana • 17:30 hrs (Videollamada)</option>
+            <option value="Jueves • 18:30 hrs (Videollamada)">Jueves • 18:30 hrs (Videollamada)</option>
+            <option value="Sábado • 11:00 hrs (Videollamada)">Sábado • 11:00 hrs (Videollamada)</option>
+          </select>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeBookingModal()" class="wf-btn-secondary text-xs px-4 py-2">
+            Cancelar
+          </button>
+          <button type="submit" class="wf-btn-primary text-xs px-4 py-2">
+            Confirmar Reserva
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       NOTIFICACIÓN FLOTANTE WIREFRAME (REEMPLAZA A ALERT())
+       ========================================================================== -->
+  <div id="wf-toast" class="hidden fixed bottom-5 right-5 z-50 wf-card bg-zinc-900 text-white px-4 py-3 max-w-sm shadow-lg">
+    <div class="flex items-start justify-between gap-3">
+      <div>
+        <span class="font-mono-tech text-[10px] uppercase text-amber-300 block">[ NOTIFICACIÓN DEL PROTOTIPO ]</span>
+        <p id="wf-toast-msg" class="text-xs sm:text-sm mt-0.5"></p>
+      </div>
+      <button onclick="document.getElementById('wf-toast').classList.add('hidden')" class="font-mono-tech text-xs text-zinc-400 hover:text-white cursor-pointer">
+        [X]
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       LÓGICA INTERACTIVA EN JAVASCRIPT
+       ========================================================================== -->
+  <script>
+    // Estado global del prototipo
+    const prototypeState = {
+      currentScreen: 'screen-1',
+      uxNotesVisible: true,
+      user: {
+        name: 'Erwin Gonzales',
+        major: 'Arquitectura',
+        semester: '9.º Semestre (Último)',
+        pains: ['No tengo experiencia formal', 'Portafolio escolar desorganizado'],
+        format: 'Videollamada 1 a 1'
+      }
+    };
+
+    // Mapeo de URLs y etiquetas por pantalla
+    const screenMeta = {
+      'screen-1': { url: 'https://jobready.mx/inicio', badge: 'PANTALLA 1 / 5' },
+      'screen-2': { url: 'https://jobready.mx/diagnostico', badge: 'PANTALLA 2 / 5' },
+      'screen-3': { url: 'https://jobready.mx/mi-ruta', badge: 'PANTALLA 3 / 5' },
+      'screen-4': { url: 'https://jobready.mx/mentorias', badge: 'PANTALLA 4 / 5' },
+      'screen-5': { url: 'https://jobready.mx/paquetes', badge: 'PANTALLA 5 / 5' },
+      'screen-flow': { url: 'https://jobready.mx/wireframe-flow-map', badge: 'VISTA PANORÁMICA (5)' }
+    };
+
+    /**
+     * Navega entre las diferentes pantallas del wireframe y actualiza la barra superior.
+     */
+    function navigateTo(screenId) {
+      prototypeState.currentScreen = screenId;
+
+      // Ocultar todas las secciones
+      document.querySelectorAll('.screen-view').forEach(sec => {
+        sec.classList.add('hidden');
+      });
+
+      // Mostrar pantalla activa
+      const target = document.getElementById(screenId);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+
+      // Actualizar estilo de pestañas en la barra superior
+      document.querySelectorAll('.nav-pill').forEach(btn => {
+        const isCurrent = btn.getAttribute('data-nav') === screenId;
+        if (isCurrent) {
+          btn.classList.remove('bg-zinc-800', 'text-zinc-300', 'text-amber-200', 'border-zinc-700');
+          btn.classList.add('bg-white', 'text-zinc-900', 'font-bold', 'border-white');
+        } else {
+          btn.classList.remove('bg-white', 'text-zinc-900', 'font-bold', 'border-white');
+          btn.classList.add('bg-zinc-800', 'border-zinc-700');
+          if (btn.getAttribute('data-nav') === 'screen-flow') {
+            btn.classList.add('text-amber-200');
+          } else {
+            btn.classList.add('text-zinc-300');
+          }
+        }
+      });
+
+      // Actualizar barra de navegador simulada
+      if (screenMeta[screenId]) {
+        document.getElementById('browser-url').textContent = screenMeta[screenId].url;
+        document.getElementById('screen-badge').textContent = screenMeta[screenId].badge;
+      }
+
+      // Scroll suave hacia arriba
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /**
+     * Alterna la visibilidad de las notas adhesivas UX / Hipótesis.
+     */
+    function toggleUxNotes() {
+      prototypeState.uxNotesVisible = !prototypeState.uxNotesVisible;
+      const statusText = document.getElementById('ux-status-text');
+      const indicator = document.getElementById('ux-indicator');
+
+      if (prototypeState.uxNotesVisible) {
+        document.body.classList.remove('hide-ux-notes');
+        statusText.textContent = 'ON';
+        indicator.classList.remove('bg-zinc-500');
+        indicator.classList.add('bg-amber-300');
+      } else {
+        document.body.classList.add('hide-ux-notes');
+        statusText.textContent = 'OFF';
+        indicator.classList.remove('bg-amber-300');
+        indicator.classList.add('bg-zinc-500');
+      }
+    }
+
+    /**
+     * Simula la reproducción de un storyboard dentro del placeholder de video en Pantalla 1.
+     */
+    function playWireframeDemo() {
+      document.getElementById('video-placeholder-default').classList.add('hidden');
+      document.getElementById('video-placeholder-playing').classList.remove('hidden');
+    }
+
+    function stopWireframeDemo() {
+      document.getElementById('video-placeholder-playing').classList.add('hidden');
+      document.getElementById('video-placeholder-default').classList.remove('hidden');
+    }
+
+    /**
+     * Autocompleta el formulario de Diagnóstico con el User Persona "Erwin Gonzales".
+     */
+    function autofillErwin() {
+      document.getElementById('input-name').value = 'Erwin Gonzales';
+      document.getElementById('input-major').value = 'Arquitectura';
+      document.getElementById('input-semester').value = '9.º Semestre (Último)';
+
+      // Marcar dolores principales de Erwin
+      const targetPains = ['No tengo experiencia formal', 'Portafolio escolar desorganizado', 'Inseguridad en entrevistas'];
+      document.querySelectorAll('input[name="pain"]').forEach(cb => {
+        cb.checked = targetPains.includes(cb.value);
+      });
+
+      // Seleccionar Videollamada 1 a 1
+      document.querySelectorAll('input[name="format"]').forEach(radio => {
+        radio.checked = radio.value === 'Videollamada 1 a 1';
+      });
+
+      showToast('Perfil de ejemplo cargado: Erwin Gonzales (Arquitectura 9.º sem).');
+    }
+
+    /**
+     * Procesa el formulario de diagnóstico y personaliza el Dashboard (Pantalla 3).
+     */
+    function submitDiagnostic(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('input-name').value.trim() || 'Estudiante JobReady';
+      const major = document.getElementById('input-major').value;
+      const semester = document.getElementById('input-semester').value;
+
+      const selectedPains = [];
+      document.querySelectorAll('input[name="pain"]:checked').forEach(cb => {
+        selectedPains.push(cb.value);
+      });
+
+      const formatEl = document.querySelector('input[name="format"]:checked');
+      const format = formatEl ? formatEl.value : 'Videollamada 1 a 1';
+
+      prototypeState.user = {
+        name,
+        major,
+        semester,
+        pains: selectedPains.length ? selectedPains : ['Preparación general'],
+        format
+      };
+
+      // Reflejar datos en Pantalla 3 (Mi Ruta)
+      document.getElementById('dash-user-name').textContent = name;
+      document.getElementById('dash-user-badge').textContent = `${major} • ${semester}`;
+      document.getElementById('dash-user-format').textContent = format;
+      document.getElementById('dash-user-pains').textContent = prototypeState.user.pains.slice(0, 2).join(' + ');
+
+      // Adaptar pregunta de entrevista según carrera
+      const questionBox = document.getElementById('interview-question-text');
+      if (major.includes('Arquitectura')) {
+        questionBox.textContent = '"No tienes experiencia formal en despacho aún. Cuéntame sobre un proyecto de taller donde hayas resuelto restricciones técnicas y de espacio usando BIM o diseño conceptual."';
+      } else if (major.includes('Ingeniería')) {
+        questionBox.textContent = '"Aunque no has trabajado formalmente en planta, ¿cómo aplicaste análisis de datos o mejora de procesos en tu proyecto integrador universitario?"';
+      } else {
+        questionBox.textContent = '"Cuéntame sobre un proyecto universitario complejo donde hayas tenido que liderar una solución real bajo presión y sin experiencia previa."';
+      }
+
+      navigateTo('screen-3');
+      showToast(`Ruta personalizada generada para ${name}.`);
+    }
+
+    /**
+     * Actualiza la barra de progreso en Pantalla 3 según las tareas marcadas.
+     */
+    function updateProgress() {
+      const checkboxes = document.querySelectorAll('.task-checkbox');
+      const total = checkboxes.length;
+      let checkedCount = 0;
+
+      checkboxes.forEach(cb => {
+        if (cb.checked) checkedCount++;
+      });
+
+      // Base 10% por completar diagnóstico + 30% por cada módulo
+      const percent = Math.min(100, 10 + Math.round((checkedCount / total) * 90));
+      document.getElementById('progress-percent').textContent = `${percent}%`;
+      document.getElementById('progress-bar-fill').style.width = `${percent}%`;
+    }
+
+    /**
+     * Simula la conversión de un archivo escolar pesado a formato ejecutivo en Módulo 1.
+     */
+    function convertAcademicProject() {
+      const btn = document.getElementById('convert-portfolio-btn');
+      const resultBox = document.getElementById('portfolio-converted-box');
+
+      btn.textContent = '✓ Proyecto Convertido a Caso Ejecutivo';
+      btn.disabled = true;
+      btn.classList.add('opacity-70', 'cursor-default');
+      resultBox.classList.remove('hidden');
+
+      showToast('Proyecto escolar sintetizado a formato ejecutivo de 3 páginas.');
+    }
+
+    /**
+     * Muestra u oculta los tips de respuesta STAR en Módulo 2.
+     */
+    function toggleInterviewTips() {
+      const box = document.getElementById('interview-tips-box');
+      const btn = document.getElementById('tips-toggle-btn');
+      const isHidden = box.classList.contains('hidden');
+
+      if (isHidden) {
+        box.classList.remove('hidden');
+        btn.textContent = 'Ocultar Tips de Respuesta';
+      } else {
+        box.classList.add('hidden');
+        btn.textContent = 'Ver Tips de Respuesta (Método STAR)';
+      }
+    }
+
+    /**
+     * Filtra las tarjetas de mentores en Pantalla 4.
+     */
+    function filterMentors(category) {
+      // Actualizar botones de filtro
+      document.querySelectorAll('.mentor-filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-filter') === category) {
+          btn.classList.remove('wf-btn-secondary');
+          btn.classList.add('wf-btn-primary');
+        } else {
+          btn.classList.remove('wf-btn-primary');
+          btn.classList.add('wf-btn-secondary');
+        }
+      });
+
+      // Filtrar tarjetas
+      document.querySelectorAll('.mentor-card').forEach(card => {
+        const cardCat = card.getAttribute('data-category');
+        if (category === 'Todos' || cardCat === category) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    /**
+     * Abre y cierra el modal de confirmación de sesión/simulacro (Pantalla 4).
+     */
+    function openBookingModal(mentorName, topic) {
+      document.getElementById('modal-mentor-name').textContent = mentorName;
+      document.getElementById('modal-mentor-topic').textContent = topic;
+      document.getElementById('booking-modal').classList.remove('hidden');
+    }
+
+    function closeBookingModal() {
+      document.getElementById('booking-modal').classList.add('hidden');
+    }
+
+    function confirmBooking(event) {
+      event.preventDefault();
+      const mentor = document.getElementById('modal-mentor-name').textContent;
+      const sessionType = document.getElementById('modal-session-type').value;
+      const slot = document.getElementById('modal-time-slot').value;
+
+      closeBookingModal();
+      showToast(`Sesión agendada con ${mentor}: ${sessionType} (${slot}).`);
+    }
+
+    /**
+     * Maneja la selección de paquete y muestra la mini-encuesta de validación (Pantalla 5).
+     */
+    function selectPlan(planName, priceLabel) {
+      const box = document.getElementById('plan-validation-box');
+      const title = document.getElementById('selected-plan-title');
+      const pollMsg = document.getElementById('poll-feedback-msg');
+
+      title.textContent = `${planName} (${priceLabel})`;
+      pollMsg.classList.add('hidden');
+      box.classList.remove('hidden');
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function submitPricePoll(answer) {
+      const pollMsg = document.getElementById('poll-feedback-msg');
+      pollMsg.textContent = `Respuesta registrada para tu entrevista: "${answer}". ¡Gracias por validar el modelo de JobReady!`;
+      pollMsg.classList.remove('hidden');
+      showToast('Respuesta de validación de precio registrada.');
+    }
+
+    /**
+     * Muestra notificación temporal estilo wireframe en la esquina inferior derecha.
+     */
+    let toastTimeout;
+    function showToast(message) {
+      const toast = document.getElementById('wf-toast');
+      const msgEl = document.getElementById('wf-toast-msg');
+      msgEl.textContent = message;
+      toast.classList.remove('hidden');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 4200);
+    }
+
+    // Inicializar estado de progreso al cargar
+    window.addEventListener('DOMContentLoaded', () => {
+      updateProgress();
+    });
+  </script>
+</body>
+</html>
